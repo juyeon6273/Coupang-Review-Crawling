@@ -107,12 +107,24 @@ class Coupang:
                 else:
                     answer = answer.text.strip()
 
+
+
+                #리뷰 작성 날짜
+                # sdp-review__article__list__info__product-info__reg-date
+                review_time = articles[idx].select_one('div.sdp-review__article__list__info__product-info__reg-date')
+                if review_time == None:
+                     review_time = 0
+                else :
+                     review_time = review_time.text.strip()
+                
+
                 dict_data['prod_name'] = prod_name
                 dict_data['user_name'] = user_name
                 dict_data['rating'] = rating
                 dict_data['headline'] = headline
                 dict_data['review_content'] = review_content
                 dict_data['answer'] = answer
+                dict_data['review_time'] = review_time
 
                 save_data.append(dict_data)
 
@@ -161,7 +173,7 @@ class OpenPyXL:
 
         wb = Workbook()
         ws = wb.active
-        ws.append(['상품명','구매자 이름','구매자 평점','리뷰 제목','리뷰 내용','맛 만족도'])
+        ws.append(['상품명','구매자 이름','구매자 평점','리뷰 제목','리뷰 내용','맛 만족도', '리뷰 날짜'])
 
         row = 2
 
@@ -173,6 +185,8 @@ class OpenPyXL:
                 ws[f'D{row}'] = result['headline']
                 ws[f'E{row}'] = result['review_content']
                 ws[f'F{row}'] = result['answer']
+                # review_time
+                ws[f'G{row}'] = result['review_time']
 
                 row += 1
 
